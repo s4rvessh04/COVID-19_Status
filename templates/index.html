@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+COVID-19.Status
+
+{% endblock %}
+
+
+{% block body %}
+<header class="topnav">
+    <nav>
+        <h1 class="mainHeading">COVID-19 status Maharashtra</h1>
+    </nav>
+    <div>
+        <form method="POST">
+            <input id="searchBox" placeholder="Search.." name="text">
+            <button id="searchBtn" type="submit">Go</button>
+        </form>
+    </div>
+</header>
+
+<h1 class="cityName">{{city}}</h1>
+<div class="mainTable">
+    <div class="column">
+        <div class="card">
+            <div class="active">
+                <p id="actCases">Active</p>
+                <p id="actNumber">{{active}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <div class="confirmed">
+                <p id="confCases">Confirmed</p>
+                <p id="confNumber">{{confirmed}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <div class="deceased">
+                <p id="decCases">Deceased</p>
+                <p id="decNumber">{{deceased}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <div class="recovered">
+                <p id="recovCases">Recovered</p>
+                <p id="recovNumber">{{recovered}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
