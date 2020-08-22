@@ -14,6 +14,12 @@ def frontPage():
     response = requests.request("GET", url, headers=headers, data = payload)
     data = response.text.encode('utf8')
     parsed = json.loads(data)
+    city = "Akola"
+    parsedData = parsed["Maharashtra"]["districtData"][str(city)]
+    active = parsedData["active"]
+    recovered = parsedData["recovered"]
+    confirmed = parsedData["confirmed"]
+    deceased = parsedData["deceased"]
 
     if request.method == "POST":
         try:
@@ -25,14 +31,15 @@ def frontPage():
             confirmed = parsedData["confirmed"]
             deceased = parsedData["deceased"]
 
-            return render_template('index.html',searchCity=searchCity, city=city, active=active, recovered=recovered, deceased=deceased, confirmed=confirmed)
+            return render_template('index.html',city=city, active=active, recovered=recovered, deceased=deceased, confirmed=confirmed)
+        
         except KeyError:
             return redirect(url_for('noData'))
     else:
         pass
     
 
-    return render_template('index.html')
+    return render_template('index.html',city=city, active=active, recovered=recovered, deceased=deceased, confirmed=confirmed)
 
 @app.route("/noData", methods=['GET','POST'])
 def noData():
