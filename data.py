@@ -33,7 +33,7 @@ def jsn():
 
     except requests.exceptions.ConnectionError:
         print("// No Internet Connection //")
-        exit()
+
     global reqData,districtName,parsed
     data = response.text.encode('utf8')
     parsed = json.loads(data)
@@ -46,18 +46,26 @@ class Data:
         with conn:
             for i in districtName:
                 city = parsed["Maharashtra"]["districtData"][str(i)]
-                c.execute("INSERT INTO data(districts,active,recovered,confirmed,deceased) VALUES(?,?,?,?,?)",(i,city["active"],city["confirmed"],city["recovered"],city["deceased"],))
+                c.execute("""INSERT INTO data(districts,active,recovered,confirmed,deceased) VALUES(?,?,?,?,?)""",(i,
+                                                                                                                city["active"],
+                                                                                                                city["confirmed"],
+                                                                                                                city["recovered"],
+                                                                                                                city["deceased"],))
     
     def deleteData(self):
         with conn:
-            c.execute("SELECT districts FROM data")
+            c.execute("DELETE FROM data")
 
     #for new data to be added
     def updateData(self):
         with conn:
             for i in districtName:
                 city = parsed["Maharashtra"]["districtData"][str(i)]
-                c.execute("UPDATE data SET Cactive=?,Crecovered=?,Cconfirmed=?,Cdeceased=? WHERE districts=?",(city["active"],city["confirmed"],city["recovered"],city["deceased"],i,))
+                c.execute("UPDATE data SET Cactive=?,Crecovered=?,Cconfirmed=?,Cdeceased=? WHERE districts=?",(city["active"],
+                                                                                                                city["confirmed"],
+                                                                                                                city["recovered"],
+                                                                                                                city["deceased"],
+                                                                                                                i,))
 
     def viewallData(self):
         with conn:
@@ -99,8 +107,35 @@ class Data:
                         c.execute("UPDATE data SET active=?,recovered=?,confirmed=?,deceased=? WHERE districts=?",(ac,re,co,de,i[0],))
 
 d = Data()
-# jsn()
-# d.addData()
-# d.updateData()
-# d.replace()
-# d.viewallData()
+
+# def compare():
+#     with sqlite3.connect("database.db") as conn:
+#         c = conn.cursor()
+#         old={}
+#         for i in c.execute("SELECT districts FROM data").fetchall():
+#             data = c.execute("SELECT active,recovered,confirmed,deceased FROM data WHERE districts=?",(i[0],)).fetchall()
+#             for j in data:
+#                 old[i[0]] = j
+#         new={}
+#         for i in c.execute("SELECT districts FROM data").fetchall():
+#             data = c.execute("SELECT Cactive,Crecovered,Cconfirmed,Cdeceased FROM data WHERE districts=?",(i[0],)).fetchall()
+#             for j in data:
+#                 new[i[0]] = j
+#         if new==old:
+#             print('\nNo increase/decrease in cases')
+#             # pass
+#         else:
+#             jsn()
+#             d.replace()
+#             d.updateData()
+#             print('Done')
+
+# compare()
+# if __name__ == '__main__':
+#     jsn()
+#     # d.addData()
+#     d.replace()
+#     d.updateData()
+#     d.viewallData()
+#     # d.deleteData()
+

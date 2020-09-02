@@ -134,3 +134,10 @@ header {
     font-size: 20px;
     font-weight: bold;
 }
+
+#status {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    position: absolute;
+    top: 30%;
+    font-size: 15px;
+}
