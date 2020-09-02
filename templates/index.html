@@ -24,37 +24,69 @@ COVID-19.Status
 <div class="mainTable">
     <div class="column">
         <div class="card">
-            <div class="active">
-                <p id="actCases">Active</p>
-                <p id="actNumber">{{active}}</p>
-                <p id="status">{{aStatus}}</p>
+            <div class="headsContainer">
+                <p id="cardHeads">Active</p>
+                <p id="cardNumber">{{active}}</p>
+                {% if aStatus < 0: %}
+                    <p id="previous" style="color: #7cbd1e;">Decreased by:</p>
+                    <p id="status">{{aStatus}}</p>
+                {% elif aStatus > 0 %}
+                    <p id="previous" style="color: #c00000;">Increased by:</p>
+                    <p id="status">{{aStatus}}</p>
+                {% else %}
+                    <p id="status">{{aStatus}}</p>
+                {% endif %}
             </div>
         </div>
     </div>
     <div class="column">
         <div class="card">
-            <div class="confirmed">
-                <p id="confCases">Confirmed</p>
-                <p id="confNumber">{{confirmed}}</p>
-                <p id="status">{{cStatus}}</p>
+            <div class="headsContainer">
+                <p id="cardHeads">Confirmed</p>
+                <p id="cardNumber">{{confirmed}}</p>
+                {% if cStatus < 0: %}
+                    <p id="previous" style="color: #7cbd1e;">Decreased by:</p>
+                    <p id="status">{{cStatus}}</p>
+                {% elif cStatus > 0 %}
+                    <p id="previous" style="color: #c00000;">Increased by:</p>
+                    <p id="status">{{cStatus}}</p>
+                {% else %}
+                    <p id="status">{{cStatus}}</p>
+                {% endif %}
             </div>
         </div>
     </div>
     <div class="column">
         <div class="card">
-            <div class="deceased">
-                <p id="decCases">Deceased</p>
-                <p id="decNumber">{{deceased}}</p>
-                <p id="status">{{dStatus}}</p>
+            <div class="headsContainer">
+                <p id="cardHeads">Deceased</p>
+                <p id="cardNumber">{{deceased}}</p>
+                {% if dStatus < 0: %}
+                    <p id="previous" style="color: #7cbd1e;">Decreased by:</p>
+                    <p id="status">{{dStatus}}</p>
+                {% elif dStatus > 0 %}
+                    <p id="previous" style="color: #c00000;">Increased by:</p>
+                    <p id="status">{{dStatus}}</p>
+                {% else %}
+                    <p id="status">{{dStatus}}</p>
+                {% endif %}
             </div>
         </div>
     </div>
     <div class="column">
         <div class="card">
-            <div class="recovered">
-                <p id="recovCases">Recovered</p>
-                <p id="recovNumber">{{recovered}}</p>
-                <p id="status">{{rStatus}}</p>
+            <div class="headsContainer">
+                <p id="cardHeads">Recovered</p>
+                <p id="cardNumber">{{recovered}}</p>
+                {% if rStatus < 0: %}
+                    <p id="previous" style="color: #7cbd1e;">Decreased by:</p>
+                    <p id="status">{{rStatus}}</p>
+                {% elif rStatus > 0 %}
+                    <p id="previous" style="color: #c00000;">Increased by:</p>
+                    <p id="status">{{rStatus}}</p>
+                {% else %}
+                    <p id="status">{{rStatus}}</p>
+                {% endif %}
             </div>
         </div>
     </div>

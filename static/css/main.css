@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    background-color: #f7f7f7;
 }
 
 header {
@@ -15,6 +16,7 @@ header {
     font-family: 'Courier New', Courier, monospace;
     font-size: 25px;
     font-weight: normal;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .mainHeading:hover {
@@ -32,6 +34,7 @@ header {
     transition: width 0.5s;
     animation: move 1s ease-in-out forwards;
     padding: 5px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);;
 }
 
 
@@ -48,6 +51,7 @@ header {
     margin-right: 10px;
     padding: 5px;
     width: 40px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);;
 }
 
 #searchBtn:hover {
@@ -66,6 +70,7 @@ header {
     top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .mainTable {
@@ -85,9 +90,9 @@ header {
 
 .card {
     position: relative;
-    /* border: 1px solid grey; */
+    /* border: 1px solid rgb(121, 121, 121); */
     border-radius: 20px;
-    box-shadow: 4px 8px 15px rgb(189, 189, 189);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     display: flexbox;
     height: 300px;
     width: 180px;
@@ -95,49 +100,34 @@ header {
     padding: 10px; 
 }
 
-#actCases {
+.headsContainer {
+    padding-top: 10px;
+}
+
+#cardHeads {
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 20px;
     font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-#actNumber {
+#cardNumber {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
-}
-
-#confCases {
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-#confNumber {
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-}
-
-#decNumber {
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-}
-
-#decCases {
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-#recovNumber {
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-}
-
-#recovCases {
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 20px;
-    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 #status {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     position: absolute;
-    top: 30%;
+    top: 60%;
     font-size: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    color: #393e46;
+}
+
+#previous {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    position: absolute;
+    top: 50%;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
