@@ -1,11 +1,14 @@
 import sqlite3
 import requests
 import json
+import datetime
 
 conn = sqlite3.connect("database.db")
 
 conn.execute("""CREATE TABLE IF NOT EXISTS data(
+    
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL,
     districts TEXT NOT NULL,
     active INTEGER,
     recovered INTEGER,
@@ -15,30 +18,33 @@ conn.execute("""CREATE TABLE IF NOT EXISTS data(
     Crecovered INTEGER,
     Cconfirmed INTEGER,
     Cdeceased INTEGER
-)""")
+    
+    )"""
+
+)
 
 c = conn.cursor()
+tnday = datetime.date.today() 
+nnday = datetime.timedelta(days=1)
+nday = str(tnday+nnday) #return successing day from today in string
+tday = str(datetime.date.today())#return today's date in string
+precday = tnday - nnday
+prevday = str(tnday - nnday)# return the previous day in string
 
 """
 Json starts from here 
 """
 
-def jsn():
-    url = "https://api.covid19india.org/state_district_wise.json"
-    payload = {}
-    headers= {}
+url = "https://api.covid19india.org/state_district_wise.json"
+payload = {}
+headers= {}
 
-    try:
-        response = requests.request("GET", url, headers=headers, data = payload)
+response = requests.request("GET", url, headers=headers, data = payload)
 
-    except requests.exceptions.ConnectionError:
-        print("// No Internet Connection //")
-
-    global reqData,districtName,parsed
-    data = response.text.encode('utf8')
-    parsed = json.loads(data)
-    reqData = ["active","confirmed","deceased","recovered"]
-    districtName = parsed["Maharashtra"]["districtData"]
+data = response.text.encode('utf8')
+parsed = json.loads(data)
+reqData = ["active","confirmed","deceased","recovered"]
+districtName = parsed["Maharashtra"]["districtData"]
 
 class Data:
     #adds the whole data(can be repeated)
@@ -46,11 +52,11 @@ class Data:
         with conn:
             for i in districtName:
                 city = parsed["Maharashtra"]["districtData"][str(i)]
-                c.execute("""INSERT INTO data(districts,active,recovered,confirmed,deceased) VALUES(?,?,?,?,?)""",(i,
-                                                                                                                city["active"],
-                                                                                                                city["confirmed"],
-                                                                                                                city["recovered"],
-                                                                                                                city["deceased"],))
+                
+                c.execute("""INSERT INTO data(date,districts,active,recovered,confirmed,deceased) VALUES(?,?,?,?,?,?)""",
+                            
+                            (tday,i,city["active"],city["recovered"],city["confirmed"],city["deceased"],)
+                    )
     
     def deleteData(self):
         with conn:
@@ -61,11 +67,11 @@ class Data:
         with conn:
             for i in districtName:
                 city = parsed["Maharashtra"]["districtData"][str(i)]
-                c.execute("UPDATE data SET Cactive=?,Crecovered=?,Cconfirmed=?,Cdeceased=? WHERE districts=?",(city["active"],
-                                                                                                                city["confirmed"],
-                                                                                                                city["recovered"],
-                                                                                                                city["deceased"],
-                                                                                                                i,))
+                
+                c.execute("UPDATE data SET Cactive=?,Crecovered=?,Cconfirmed=?,Cdeceased=? WHERE districts=?",
+                            
+                            (city["active"],city["recovered"],city["confirmed"],city["deceased"],i,)
+                    )
 
     def viewallData(self):
         with conn:
@@ -85,12 +91,10 @@ class Data:
         elif datatype == 'Deceased':
             deceased = c.execute("SELECT Cdeceased FROM data WHERE districts=?",(name,)).fetchone()
             print(deceased[0])
-        else:
-            print('Not a valid type')
+        else:print('Not a valid type')
     
     def replace(self):
         with conn:
-            #data from database
             dic = {}
             for i in c.execute("SELECT districts FROM data").fetchall():
                 data = c.execute("SELECT Cactive,Crecovered,Cconfirmed,Cdeceased FROM data WHERE districts=?",(i[0],)).fetchall()
@@ -104,38 +108,55 @@ class Data:
                         re = dic[j][1]
                         co = dic[j][2]
                         de = dic[j][3]
-                        c.execute("UPDATE data SET active=?,recovered=?,confirmed=?,deceased=? WHERE districts=?",(ac,re,co,de,i[0],))
+                        c.execute("UPDATE data SET active=?,recovered=?,confirmed=?,deceased=? WHERE districts=?",
+                                    
+                                    (ac,re,co,de,i[0],)
+                            )
 
 d = Data()
 
-# def compare():
-#     with sqlite3.connect("database.db") as conn:
-#         c = conn.cursor()
-#         old={}
-#         for i in c.execute("SELECT districts FROM data").fetchall():
-#             data = c.execute("SELECT active,recovered,confirmed,deceased FROM data WHERE districts=?",(i[0],)).fetchall()
-#             for j in data:
-#                 old[i[0]] = j
-#         new={}
-#         for i in c.execute("SELECT districts FROM data").fetchall():
-#             data = c.execute("SELECT Cactive,Crecovered,Cconfirmed,Cdeceased FROM data WHERE districts=?",(i[0],)).fetchall()
-#             for j in data:
-#                 new[i[0]] = j
-#         if new==old:
-#             print('\nNo increase/decrease in cases')
-#             # pass
-#         else:
-#             jsn()
-#             d.replace()
-#             d.updateData()
-#             print('Done')
+def compare():
+    with conn:
+        old={}
+        for i in c.execute("SELECT districts FROM data").fetchall():
+            data = c.execute("SELECT active,recovered,confirmed,deceased FROM data WHERE districts=?",
+                        
+                        (i[0],)
+                
+                ).fetchall()
+            
+            for j in data:
+                old[i[0]] = j
+        
+        new={}
+        for i in c.execute("SELECT districts FROM data").fetchall():
+            data = c.execute("SELECT Cactive,Crecovered,Cconfirmed,Cdeceased FROM data WHERE districts=?",
+                        
+                        (i[0],)
+                    
+                ).fetchall()
+            
+            for j in data:
+                new[i[0]] = j
+        
+        dateDB = c.execute("SELECT date FROM data").fetchone()
+        
+        if tday == dateDB[0]:print('dates matched no data changed')
+        else:
+            if prevday == dateDB[0]:
+                print('Here')
+                for i in districtName:
+                    c.execute("UPDATE data SET date=? WHERE districts=?",(tday,i,))
+                d.replace()
+                d.updateData()
+                return 0
+            
 
-# compare()
-# if __name__ == '__main__':
-#     jsn()
-#     # d.addData()
-#     d.replace()
-#     d.updateData()
-#     d.viewallData()
-#     # d.deleteData()
+if __name__ == '__main__':
+    compare()
+    # d.addData()
+    # d.replace()
+    # d.updateData()
+    d.viewallData()
+    # d.deleteData()
 
