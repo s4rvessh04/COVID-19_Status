@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #f7f7f7;
+    background-color: #f4f3f3;
 }
 
 header {
@@ -13,11 +13,11 @@ header {
 }
 
 .mainHeading {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Cabin', sans-serif;
     font-size: 25px;
-    font-weight: normal;
+    font-weight: 100;
     color: rgba(0, 0, 0, 1);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px #dfdfdf;
 }
 
 .mainHeading:hover {
@@ -34,8 +34,8 @@ header {
 }
 
 #searchBox {
-    font-family: 'Courier New', Courier, monospace;
-    border: 1px solid grey;
+    font-family: 'Varela Round', sans-serif;
+    border: 1px solid rgb(0,0,0,0.2);
     /* height: 20px; */
     border-radius: 8px;
     padding: 2px;
@@ -44,7 +44,7 @@ header {
     transition: width 0.5s;
     animation: move 1s ease-in-out forwards;
     padding: 5px;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);;
+    box-shadow: 1px 1px 2px #dfdfdf;
 }
 
 
@@ -53,7 +53,7 @@ header {
 }
 
 #searchBtn {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Varela Round', sans-serif;
     border: 1px solid rgb(190, 190, 190);
     border-radius: 8px;
     text-decoration: none;
@@ -61,7 +61,7 @@ header {
     margin-right: 10px;
     padding: 5px;
     width: 40px;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);;
+    box-shadow: 1px 1px 2px #dfdfdf;
 }
 
 #searchBtn:hover {
@@ -72,7 +72,7 @@ header {
 }
 
 .cityName {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Ubuntu', sans-serif;
     font-weight: lighter;
     font-size: 30px;
     position: absolute;
@@ -80,7 +80,7 @@ header {
     top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px #dfdfdf;
 }
 
 .mainTable {
@@ -118,12 +118,12 @@ header {
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 20px;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px #dfdfdf;
 }
 
 #cardNumber {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px #dfdfdf;
 }
 
 #status {
@@ -131,7 +131,7 @@ header {
     position: absolute;
     top: 60%;
     font-size: 15px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px #dfdfdf;
     color: #393e46;
 }
 
@@ -139,7 +139,7 @@ header {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     position: absolute;
     top: 50%;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px #dfdfdf;
 }
 
 #_noChange {
@@ -147,6 +147,5 @@ header {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #757575;
     top: 60%;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-
+    text-shadow: 1px 1px 2px #dfdfdf;
 }
