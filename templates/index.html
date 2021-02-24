@@ -1,166 +1,63 @@
-{% extends 'base.html' %}
-{% block head %}
-Home | COVID-19_Status
-{% endblock %}
-
-{% block body %}
-<style>
-    .navbar {
-    background-color: #fff;
-    }
-</style>
-<nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid px-xl-5 px-4 py-md-2 py-1">
-        <a class="navbar-brand" href="/home"><h3 class="fw-bold">COVID-19_Status</h3></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 mt-lg-0 mt-3">
-                <form class="d-flex" method="POST">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="text" id="searchBox">
-                    <button class="btn btn-outline-success" type="submit" id="searchBtn">Search</button>
-                </form>
-            </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Cabin&family=Ubuntu&family=Varela+Round&display=swap"
+        rel="stylesheet">
+    <title>Home | COVID-19_Status</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid px-xl-5 px-4 py-md-2 py-1">
+            <a class="navbar-brand" href="/"><h3 class="fw-bold">COVID-19_Status</h3></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 mt-lg-0 mt-3">
+                    <form class="d-flex" method="POST">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="text" id="searchBox">
+                        <button class="btn btn-outline-success" type="submit" id="searchBtn">Search</button>
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container text-center px-2 py-md-4 py-1 h1 cityName">{{templateData['city']}}</div>
+    <div class="container-xl py-3">
+        <div class="row gy-4">{% for data in templateData %}{% if data != 'city' %}
+            <div class="col-lg-3 col-6">
+                <div class="text-center my-cards py-md-3 py-2 px-1 my-border my-hover-{{data}} my-around">
+                    <div>
+                        <p class="cardHeads h6 fw-bold my-{{data}}">{{data|upper}}</p>
+                        <p class="cardNumber h4 my-{{data}}">{{templateData[data][0]}}</p>
+                    </div>
+                    <div>{% if templateData[data][1] > 0 %}
+                        <p id="previous" class="d-flex justify-content-center align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="{{data}}">
+                                <path fill-rule="evenodd" d="M13.03 8.22a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.47 9.28a.75.75 0 011.06-1.06l2.97 2.97V3.75a.75.75 0 011.5 0v7.44l2.97-2.97a.75.75 0 011.06 0z"></path>
+                            </svg>
+                            <span id="status" class="ps-1 my-{{data}}">{{templateData[data][1]}}</span>
+                            </p>
+                        {% elif templateData[data][1] < 0 %}
+                        <p id="previous" class="d-flex justify-content-center align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="{{data}}">
+                                <path fill-rule="evenodd"d="M3.47 7.78a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 0l4.25 4.25a.75.75 0 01-1.06 1.06L9 4.81v7.44a.75.75 0 01-1.5 0V4.81L4.53 7.78a.75.75 0 01-1.06 0z"></path>
+                            </svg>
+                            <span id="status" class="ps-1 my-{{data}}">{{templateData[data][1]}}</span>
+                        </p>{%endif%}
+                    </div>
+                </div>
+            </div>
+            {% endif %}{% endfor %}
         </div>
     </div>
-</nav>
-
-<div class="container text-center px-2 py-md-4 py-1 h1 cityName">{{city}}</div>
-<div class="container-xl py-3">
-    <div class="row gy-4">
-        <div class="col-lg-3 col-6">
-            <div class="text-center my-cards py-md-3 py-2 px-1 my-border my-hover-active my-around">
-                <div>
-                    <p class="cardHeads h6 fw-bold my-active">Active</p>
-                    <p class="cardNumber h4 my-active">{{active}}</p>
-                </div>
-                <div>
-                    {% if aStatus %}
-                        {% if aStatus < 0 %}
-                        <p id="previous" class="d-flex justify-content-center align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="active">
-                            <path fill-rule="evenodd"
-                                d="M13.03 8.22a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.47 9.28a.75.75 0 011.06-1.06l2.97 2.97V3.75a.75.75 0 011.5 0v7.44l2.97-2.97a.75.75 0 011.06 0z">
-                            </path>
-                        </svg>
-                        <span id="status"class="ps-1 my-active">{{aStatus}}</span>
-                        </p>
-                        {% elif aStatus > 0 %}
-                        <p id="previous" class="d-flex justify-content-center align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="active">
-                            <path fill-rule="evenodd"
-                                d="M3.47 7.78a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 0l4.25 4.25a.75.75 0 01-1.06 1.06L9 4.81v7.44a.75.75 0 01-1.5 0V4.81L4.53 7.78a.75.75 0 01-1.06 0z">
-                            </path>
-                        </svg>
-                        <span id="status" class="ps-1 my-active">{{aStatus}}</span>
-                        </p>
-                        {% endif %}
-                    {% else %}
-                        <p></p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-6">
-            <div class="text-center my-cards py-md-3 py-2 px-1 my-border my-hover-confirmed my-around">
-                <div>
-                    <p class="cardHeads h6 fw-bold my-confirmed">Confirmed</p>
-                    <p class="cardNumber h4 my-confirmed">{{confirmed}}</p>
-                </div>
-                <div>
-                {% if cStatus %}
-                    {% if cStatus < 0 %} 
-                    <p id="previous" class="d-flex justify-content-center align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="confirmed">
-                            <path fill-rule="evenodd"
-                                d="M13.03 8.22a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.47 9.28a.75.75 0 011.06-1.06l2.97 2.97V3.75a.75.75 0 011.5 0v7.44l2.97-2.97a.75.75 0 011.06 0z">
-                            </path>
-                        </svg>
-                        <span id="status" class="ps-1 my-active">{{cStatus}}</span>
-                        </p>
-                        {% elif cStatus > 0 %}
-                        <p id="previous" class="d-flex justify-content-center align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="confirmed">
-                                <path fill-rule="evenodd"
-                                    d="M3.47 7.78a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 0l4.25 4.25a.75.75 0 01-1.06 1.06L9 4.81v7.44a.75.75 0 01-1.5 0V4.81L4.53 7.78a.75.75 0 01-1.06 0z">
-                                </path>
-                            </svg>
-                            <span id="status" class="ps-1 my-active">{{cStatus}}</span>
-                        </p>
-                    {% endif %}
-                    {% else %}
-                    <p></p>
-                {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-6">
-            <div class="text-center my-cards py-md-3 py-2 px-1 my-border my-hover-recovered my-around">
-                <div>
-                    <p class="cardHeads h6 fw-bold my-recovered">Recovered</p>
-                    <p class="cardNumber h4 my-recovered">{{recovered}}</p>
-                </div>
-                <div>
-                {% if rStatus %}
-                    {% if rStatus < 0 %} 
-                        <p id="previous" class="d-flex justify-content-center align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="recovered">
-                                <path fill-rule="evenodd"
-                                    d="M13.03 8.22a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.47 9.28a.75.75 0 011.06-1.06l2.97 2.97V3.75a.75.75 0 011.5 0v7.44l2.97-2.97a.75.75 0 011.06 0z">
-                                </path>
-                            </svg>
-                            <span id="status" class="ps-1 my-active">{{rStatus}}</span>
-                        </p>
-                        {% elif rStatus > 0 %}
-                        <p id="previous" class="d-flex justify-content-center align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="recovered">
-                                <path fill-rule="evenodd"
-                                    d="M3.47 7.78a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 0l4.25 4.25a.75.75 0 01-1.06 1.06L9 4.81v7.44a.75.75 0 01-1.5 0V4.81L4.53 7.78a.75.75 0 01-1.06 0z">
-                                </path>
-                            </svg>
-                            <span id="status" class="ps-1 my-active">{{rStatus}}</span>
-                        </p>
-                    {% endif %}
-                {% else %}
-                <p></p>
-                {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-6">
-            <div class="text-center my-cards py-md-3 py-2 px-1 my-border my-hover-deceased my-around">
-                <div>
-                    <p class="cardHeads h6 fw-bold my-deceased">Deceased</p>
-                    <p class="cardNumber h4 my-deceased">{{deceased}}</p>
-                </div>
-                <div>
-                    {% if dStatus %}
-                        {% if dStatus < 0 %} <p id="previous" class="d-flex justify-content-center align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="deceased">
-                                <path fill-rule="evenodd"
-                                    d="M13.03 8.22a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.47 9.28a.75.75 0 011.06-1.06l2.97 2.97V3.75a.75.75 0 011.5 0v7.44l2.97-2.97a.75.75 0 011.06 0z">
-                                </path>
-                            </svg>
-                            <span id="status" class="ps-1 my-active">{{dStatus}}</span>
-                            </p>
-                            {% elif dStatus > 0 %}
-                            <p id="previous" class="d-flex justify-content-center align-items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" class="deceased">
-                                    <path fill-rule="evenodd"
-                                        d="M3.47 7.78a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 0l4.25 4.25a.75.75 0 01-1.06 1.06L9 4.81v7.44a.75.75 0 01-1.5 0V4.81L4.53 7.78a.75.75 0 01-1.06 0z">
-                                    </path>
-                                </svg>
-                                <span id="status" class="ps-1 my-active">{{dStatus}}</span>
-                            </p>
-                        {% endif %}
-                    {% else %}
-                    <p></p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
+</body>
+</html>

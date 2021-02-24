@@ -8,40 +8,16 @@ app = Flask(__name__)
 data = Data()
 date = Date()
 
-
-@app.route("/home", methods=['GET', 'POST'])
-def button():
-    return redirect(url_for('frontPage'))
-
-
 @app.route("/", methods=['GET', 'POST'])
 def frontPage():
-    # Getting the latest data
-    city = 'Akola'
-    currentData = data.queryData('current', ('cities', city.capitalize()))[-1]
-    
-    if request.method == "POST":
-        searchCity = str(request.form['text'])
-        return redirect(url_for('cities', cty=searchCity))
-    else:
-        active = currentData[-4]
-        recovered = currentData[-3]
-        confirmed = currentData[-2]
-        deceased = currentData[-1]
-        
-        return render_template('index.html',
-                               city=city,
-                               active=active,
-                               recovered=recovered,
-                               deceased=deceased,
-                               confirmed=confirmed
-                               )
-
-
-@app.route("/<cty>", methods=['GET', 'POST'])
-def cities(cty):
     try:
-        city = str(cty).capitalize()
+        city = 'Akola'
+        if request.method == 'POST':
+            try:
+                searchCity = str(request.form['text'])
+                city = str(searchCity).capitalize()
+            except Exception:
+                return redirect(url_for('noData'))
         # This is to check if this is the first time of database creation.
         # Implemented to avoid the IndexError for previousData.
         try:
@@ -57,29 +33,20 @@ def cities(cty):
         activeStatus = currentData[-4] - previousData[-4]
         recoveredStatus = currentData[-3] - previousData[-3]
         confirmedStatus = currentData[-2] - previousData[-2]
-        decesedStatus = currentData[-1] - previousData[-1]
+        deceasedStatus = currentData[-1] - previousData[-1]
         
-        if request.method == 'POST':
-            try:
-                searchCity = str(request.form['text'])
-                return redirect(url_for('cities', cty=searchCity))
-            except Exception:
-                return redirect(url_for('noData'))
+        templateData = {
+            'city': city,
+            'confirmed': [confirmed, confirmedStatus],
+            'active': [active, activeStatus],
+            'recovered': [recovered, recoveredStatus],
+            'deceased': [deceased, deceasedStatus]
+        }
+        return render_template('index.html', templateData=templateData)
 
-        return render_template('index.html',
-                               city=city,
-                               active=active,
-                               recovered=recovered,
-                               deceased=deceased,
-                               confirmed=confirmed,
-                               aStatus=activeStatus,
-                               rStatus=recoveredStatus,
-                               cStatus=confirmedStatus,
-                               dStatus=decesedStatus
-                               )
-    except Exception:
+    except Exception as e:
+        print(e)
         return redirect(url_for('noData'))
-
 
 @app.route("/noData", methods=['GET'])
 def noData():

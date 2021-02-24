@@ -7,12 +7,14 @@ body {
     min-height: 100vh;
     background: #f4f3f3;
 }
-
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 10px;
+}
+.navbar {
+    background-color: #fff;
 }
 .navbar-brand {
     font-family: 'Cabin', sans-serif;
@@ -40,7 +42,7 @@ header {
 }
 .my-hover-active:hover {
     transition: all 0.3s ease;
-background: rgba(0, 123, 255, .225);
+    background: rgba(0, 123, 255, .225);
 }
 .my-recovered {
     color: rgb(40, 121, 60);
