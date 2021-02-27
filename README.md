@@ -33,3 +33,13 @@
     Click on the link if allowed or copy paste in your browser of choice.
 
 And you are all set to view the data of your city.
+
+## Mobile View
+<p align="center">
+  <img src="images/mobile_view.jpeg">
+</p>
+
+## Desktop View
+<p align="center">
+  <img src="images/desktop_view.jpeg">
+</p>
